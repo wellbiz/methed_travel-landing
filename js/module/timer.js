@@ -1,5 +1,7 @@
 import {declOfNum} from './declOfNum.js';
 
+const add0prevNum = (num) => num.toString().padStart(2, '0');
+
 export const timer = (deadline) => {
     const daysValue = document.querySelector('.timer__count_days');
     const daysDescr = document.querySelector('.timer__units_days');
@@ -30,17 +32,17 @@ export const timer = (deadline) => {
     const start = () => {
         const timer = getTimeRemaining();
 
-        daysValue.textContent = timer.days.toString().padStart(2, '0');
+        daysValue.textContent = add0prevNum(timer.days);
         daysDescr.textContent = declOfNum(timer.days, ['день', 'дня', 'дней']);
 
-        hoursValue.textContent = timer.hours.toString().padStart(2, '0');
+        hoursValue.textContent = add0prevNum(timer.hours);
         hoursDescr.textContent = declOfNum(timer.hours, [
             'час',
             'часа',
             'часов',
         ]);
 
-        minutesValue.textContent = timer.minutes.toString().padStart(2, '0');
+        minutesValue.textContent = add0prev(timer.minutes);
         minutesDescr.textContent = declOfNum(timer.minutes, [
             'минута',
             'минуты',
