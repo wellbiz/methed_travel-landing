@@ -14,9 +14,19 @@ export const timer = (deadline) => {
 
     const getTimeRemaining = () => {
         const dateExpired = new Date(deadline).getTime();
+        const date2UTC = new Date(deadline);
+        const dateGrinvich = Date.UTC(
+            date2UTC.getFullYear(),
+            date2UTC.getMonth(),
+            date2UTC.getDate(),
+            date2UTC.getHours() + 3,
+            date2UTC.getMinutes(),
+            date2UTC.getSeconds()
+        );
+
         const dateNow = Date.now();
 
-        const timeRemaining = dateExpired - dateNow;
+        const timeRemaining = dateGrinvich - dateNow;
 
         const days =
             timeRemaining > 0 ? ~~(timeRemaining / 1000 / 60 / 60 / 24) : 0;
@@ -32,22 +42,49 @@ export const timer = (deadline) => {
     const start = () => {
         const timer = getTimeRemaining();
 
-        daysValue.textContent = add0prevNum(timer.days);
-        daysDescr.textContent = declOfNum(timer.days, ['день', 'дня', 'дней']);
+        if (timer.timeRemaining < 86400 * 1000) {
+            daysValue.textContent = add0prevNum(timer.hours);
+            daysDescr.textContent = declOfNum(timer.hours, [
+                'час',
+                'часа',
+                'часов',
+            ]);
 
-        hoursValue.textContent = add0prevNum(timer.hours);
-        hoursDescr.textContent = declOfNum(timer.hours, [
-            'час',
-            'часа',
-            'часов',
-        ]);
+            hoursValue.textContent = add0prevNum(timer.minutes);
+            hoursDescr.textContent = declOfNum(timer.minutes, [
+                'минута',
+                'минуты',
+                'минут',
+            ]);
 
-        minutesValue.textContent = add0prevNum(timer.minutes);
-        minutesDescr.textContent = declOfNum(timer.minutes, [
-            'минута',
-            'минуты',
-            'минут',
-        ]);
+            minutesValue.textContent = add0prevNum(timer.seconds);
+            minutesDescr.textContent = declOfNum(timer.seconds, [
+                'секунда',
+                'секунды',
+                'секунд',
+            ]);
+        } else {
+            daysValue.textContent = add0prevNum(timer.days);
+            daysDescr.textContent = declOfNum(timer.days, [
+                'день',
+                'дня',
+                'дней',
+            ]);
+
+            hoursValue.textContent = add0prevNum(timer.hours);
+            hoursDescr.textContent = declOfNum(timer.hours, [
+                'час',
+                'часа',
+                'часов',
+            ]);
+
+            minutesValue.textContent = add0prevNum(timer.minutes);
+            minutesDescr.textContent = declOfNum(timer.minutes, [
+                'минута',
+                'минуты',
+                'минут',
+            ]);
+        }
 
         const intervalId = setTimeout(start, 1000);
 
