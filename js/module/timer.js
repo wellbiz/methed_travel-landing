@@ -42,7 +42,7 @@ export const timer = (deadline) => {
             'часов',
         ]);
 
-        minutesValue.textContent = add0prev(timer.minutes);
+        minutesValue.textContent = add0prevNum(timer.minutes);
         minutesDescr.textContent = declOfNum(timer.minutes, [
             'минута',
             'минуты',
