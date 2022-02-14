@@ -16,35 +16,3 @@ const currentPageUp = () => {
 window.addEventListener('scroll', currentPageUp);
 
 currentPageUp();
-// let opacity = 1;
-// const hideMenu = () => {
-    
-//     const menu = document.querySelector('.header__menu');
-//     if (menu.classList.contains('header__menu_active')) {
-//         opacity -= 0.03;
-//         menu.style.opacity = opacity;
-//         if (opacity > 0) {
-//             requestAnimationFrame(hideMenu, 30);
-//         } else {
-//             menu.classList.toggle('header__menu_active');
-//         }
-//     }
-// };
-
-// hideMenu();
-// opacity = 0;
-// const showMenu = () => {
- 
-//     const menu = document.querySelector('.header__menu');
-//     if (!menu.classList.contains('header__menu_active')) {
-//         opacity += 0.03;
-//         menu.style.opacity = opacity;
-//         if (opacity < 1) {
-//             requestAnimationFrame(showMenu, 30);
-//         } else {
-//             menu.classList.toggle('header__menu_active');
-//         }
-//     }
-// };
-
-// showMenu();

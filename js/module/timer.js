@@ -14,19 +14,11 @@ export const timer = (deadline) => {
 
     const getTimeRemaining = () => {
         const dateExpired = new Date(deadline).getTime();
-        const date2UTC = new Date(deadline);
-        const dateGrinvich = Date.UTC(
-            date2UTC.getFullYear(),
-            date2UTC.getMonth(),
-            date2UTC.getDate(),
-            date2UTC.getHours() + 3,
-            date2UTC.getMinutes(),
-            date2UTC.getSeconds()
-        );
+
 
         const dateNow = Date.now();
 
-        const timeRemaining = dateGrinvich - dateNow;
+        const timeRemaining = dateExpired- dateNow;
 
         const days =
             timeRemaining > 0 ? ~~(timeRemaining / 1000 / 60 / 60 / 24) : 0;
