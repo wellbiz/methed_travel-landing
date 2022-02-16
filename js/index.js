@@ -1,7 +1,8 @@
-import {timer} from './module/timer.js';
+import { timer } from './module/timer.js';
 import './module/acc.js';
 import './module/burger.js';
 import './module/animation.js';
+import './module/fetch.js';
 
 const showTimer = () => {
     const blockTimer = document.querySelector('.timer');
