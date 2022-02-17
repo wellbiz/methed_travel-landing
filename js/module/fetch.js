@@ -1,142 +1,118 @@
-import {declOfNum} from './declOfNum.js';
+import { declOfNum } from "./declOfNum.js";
 
-const loadTours = async (cb) => {
-    const res = await fetch('data.json');
+const loadTours = async(cb) => {
+    const res = await fetch("data.json");
     const data = await res.json();
     cb(data);
 };
 
-const createSelectDateTour = (data) => {
-    const selectDate = document.getElementById('tour__date');
+const initSelectDate = (data) => {
+    const firstOptionDateTour = document.createElement("option");
+    const firstOptionDateBooking = firstOptionDateTour.cloneNode();
 
-    const optionTemplate = document.createElement('option');
-    optionTemplate.className = 'tour__option';
+    firstOptionDateTour.value = "";
+    firstOptionDateTour.className = "tour__option";
+    firstOptionDateTour.textContent = "Выбери дату";
+
+    firstOptionDateBooking.value = "";
+    firstOptionDateBooking.className = "tour__option reservation__option";
+    firstOptionDateBooking.textContent = "Дата путешествия";
+
+    const classNameTour = "tour__option";
+    const classNameBooking = "tour__option reservation__option";
+
+    createTourDate(data, firstOptionDateTour, classNameTour, "tour");
+    createTourDate(data, firstOptionDateBooking, classNameBooking, "reservation");
+};
+const createTourDate = (data, firstOption, className, idForm) => {
+    const selectDate = document.getElementById(`${idForm}__date`);
+
     let options = [];
 
-    data.forEach((item) => {
-        const option = optionTemplate.cloneNode();
-        option.value = item['date'];
-        option.textContent = item['date'];
+    data.forEach((tour) => {
+        const option = document.createElement("option");
+        option.textContent = tour["date"];
+        option.value = tour["date"];
+        option.className = className;
+
         options.push(option);
     });
 
-    selectDate.append(...options);
+    selectDate.append(firstOption, ...options);
+    options = [];
 };
 
-const createSelectPeopleTour = (data) => {
-    const selectDate = document.getElementById('tour__date');
+const createTourPeople = (data, idForm) => {
+    const selectDate = document.getElementById(`${idForm}__date`);
+    const selectPeople = document.getElementById(`${idForm}__people`);
 
-    const optionTemplate = document.createElement('option');
-    optionTemplate.className = 'tour__option';
+    const firstOption = document.createElement("option");
+    firstOption.textContent = "Количество человек";
+    firstOption.className = "tour__option";
 
-    const firstOption = optionTemplate.cloneNode();
-    firstOption.textContent = 'Количество человек';
-
-    const selectWrapper = document.querySelector(
-        '.tour__select-wrapper_people'
-    );
-
-    selectDate.addEventListener('change', () => {
-        if (selectDate.value) {
-            let options = [];
-            selectWrapper.querySelector('select').remove();
-
-            const select = document.createElement('select');
-            select.id = 'tour__people';
-            select.name = 'people';
-            select.className = 'tour__select';
-
-            let choisedDate = data.find(
-                (el) => el['date'] === selectDate.value
-            );
-            for (
-                let i = +choisedDate['min-people'];
-                i <= +choisedDate['max-people'];
-                i++
-            ) {
-                const option = optionTemplate.cloneNode();
-                option.textContent = i;
-                options.push(option);
-            }
-
-            select.append(firstOption, ...options);
-            selectWrapper.append(select);
-        }
-    });
-};
-
-const bookingTour = (data) => {
-    const selectDate = document.getElementById('reservation__date');
-
-    const optionTemplate = document.createElement('option');
-    optionTemplate.className = 'tour__option reservation__option';
     let options = [];
 
-    data.forEach((item) => {
-        const option = optionTemplate.cloneNode();
-        option.value = item['date'];
-        option.textContent = item['date'];
-        options.push(option);
-    });
+    selectDate.addEventListener("change", () => {
+        document
+            .querySelectorAll(`#${idForm}__people option`)
+            .forEach((option) => option.remove());
+        if (selectDate.value === "") {
+            selectPeople.append(firstOption);
+        } else {
+            const choisedDate = selectDate.value;
 
-    selectDate.append(...options);
-};
+            const tour = data.find((tour) => choisedDate === tour["date"]);
 
-const BookingPeople = (data) => {
-    const selectDate = document.getElementById('reservation__date');
-
-    const optionTemplate = document.createElement('option');
-    optionTemplate.className = 'tour__option reservation__option';
-
-    const firstOption = optionTemplate.cloneNode();
-    firstOption.textContent = 'Количество человек';
-
-    const selectWrapper = document.querySelector(
-        '.reservation__select-wrapper_people'
-    );
-    let choisedDate = {};
-    selectDate.addEventListener('change', () => {
-        if (selectDate.value) {
-            let options = [];
-            selectWrapper.querySelector('select').remove();
-
-            const select = document.createElement('select');
-            select.id = 'reservation__people';
-            select.name = 'people';
-            select.className = 'reservation__select';
-
-            choisedDate = data.find((el) => el['date'] === selectDate.value);
-            for (
-                let i = +choisedDate['min-people'];
-                i <= +choisedDate['max-people'];
-                i++
-            ) {
-                const option = optionTemplate.cloneNode();
+            for (let i = tour["min-people"]; i <= tour["max-people"]; ++i) {
+                const option = document.createElement("option");
+                option.className = "tour__option";
                 option.textContent = i;
+
                 options.push(option);
             }
-
-            select.append(firstOption, ...options);
-            selectWrapper.append(select);
+            selectPeople.append(firstOption, ...options);
+            options = [];
         }
     });
-    selectWrapper.addEventListener('change', (e) => {
-        document.querySelector('.reservation__data').textContent = `${
-            choisedDate['date']
-        }, ${e.target.value} ${declOfNum(e.target.value, [
-            'человек',
-            'человека',
-            'человек',
-        ])}`;
-        document.querySelector('.reservation__price').textContent =
-            new Intl.NumberFormat('ru', {
-                style: 'currency',
-                currency: 'RUB',
+};
+const showInfoTour = (data) => {
+    const selectPeople = document.getElementById("reservation__people");
+    const selectDate = document.getElementById(`reservation__date`);
+
+    const dateAndPeople = document.querySelector(".reservation__data");
+    const price = document.querySelector(".reservation__price");
+
+    selectPeople.addEventListener("change", () => {
+        const countPeople = parseInt(selectPeople.value);
+        if (isNaN(countPeople)) {
+            dateAndPeople.textContent = "";
+            price.textContent = "";
+        } else {
+            const tour = data.find((tour) => selectDate.value === tour["date"]);
+            dateAndPeople.textContent = `${tour["date"]}, ${countPeople} ${declOfNum(
+        countPeople,
+        ["человек", "человека", "человек"]
+      )}`;
+
+            price.textContent = new Intl.NumberFormat("ru", {
+                style: "currency",
+                currency: "RUB",
                 maximumFractionDigits: 0,
-            }).format(choisedDate['price'] * +e.target.value);
+            }).format(tour["price"] * countPeople);
+        }
+    });
+
+    selectDate.addEventListener("focus", () => {
+        dateAndPeople.textContent = "";
+        price.textContent = "";
     });
 };
-loadTours(createSelectDateTour);
-loadTours(createSelectPeopleTour);
-loadTours(bookingTour);
-loadTours(BookingPeople);
+
+const initSelectPeople = (data) => {
+    createTourPeople(data, "tour");
+    createTourPeople(data, "reservation");
+
+    showInfoTour(data);
+};
+loadTours(initSelectDate);
+loadTours(initSelectPeople);
