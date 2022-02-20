@@ -3,6 +3,7 @@ import './module/acc.js';
 import './module/burger.js';
 import './module/animation.js';
 import './module/fetch.js';
+import './module/send.js';
 
 const showTimer = () => {
     const blockTimer = document.querySelector('.timer');
