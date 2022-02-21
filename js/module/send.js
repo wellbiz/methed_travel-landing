@@ -39,10 +39,12 @@ formBookingTour.addEventListener('submit', (e) => {
                 console.warn(err, data);
                 formBookingTour.textContent = err;
             }
-            formBookingTour.textContent = `Заявка успешно отправлена, наши менеджеры свяжутся с вами`;
+            document.querySelector(
+                '.reservation__info'
+            ).textContent = `Заявка успешно отправлена, наши менеджеры свяжутся с вами`;
         },
         headers: {
-            'Content-Type': 'application.json',
+            'Content-type': 'application/json; charset=UTF-8',
         },
     });
 });
@@ -72,10 +74,9 @@ formEmail.addEventListener('submit', (e) => {
             result.textContent =
                 'Наши менеджеры свяжутся с вами в течении 3 рабочих дней';
             formEmail.append(title, result);
-
         },
         headers: {
-            'Content-Type': 'application.json',
+            'Content-type': 'application/json; charset=UTF-8',
         },
     });
 });
