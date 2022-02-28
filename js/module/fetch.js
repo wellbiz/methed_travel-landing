@@ -1,5 +1,21 @@
 import { declOfNum } from "./declOfNum.js";
+import { fetchRequest } from "./fetch/fetchRequest.js";
+import showModal from "./modal.js";
 
+/*
+Задание №1
+Дизайнер подготовил стили и вёрстку
+Ваша задача интегрировать стили (ассинхронно) перед открытием модального окна
+HTML-код писать не нужно, модальное окно создаем скриптами
+Модальное окно открывается при клике на кнопку "Забронировать" в форме "Бронирования тура"
+Данные в модальном окне должны формироваться на основе данных из формы
+
+Задание №2
+В модальном окне:
+При клике на "Изменить данные" зарываем модальное окно
+При клике на "Подтверждаю" зарываем модальное окно и выполняем отправку данных
+После успшной отправки все элементы в форме сделать disabled
+*/
 const loadTours = async(cb) => {
     const res = await fetch("data.json");
     const data = await res.json();
@@ -116,3 +132,33 @@ const initSelectPeople = (data) => {
 };
 loadTours(initSelectDate);
 loadTours(initSelectPeople);
+
+const formBookingTour = document.querySelector(".reservation__form");
+
+formBookingTour.addEventListener("submit", (e) => {
+    e.preventDefault();
+    fetchRequest("https://jsonplaceholder.typicode.com/posts", {
+        callback: showModal,
+    });
+    // fetchRequest('https://jsonplaceholder.typicode.com/posts', {
+    //     method: 'POST',
+    //     body: {
+    //         dates: formBookingTour.dates.value,
+    //         people: formBookingTour.people.value,
+    //         fio: formBookingTour.fio.value,
+    //         phone: formBookingTour.phone.value,
+    //     },
+    //     callback(err, data) {
+    //         if (err) {
+    //             console.warn(err, data);
+    //             formBookingTour.textContent = err;
+    //         }
+    //         document.querySelector(
+    //             '.reservation__info'
+    //         ).textContent = `Заявка успешно отправлена, наши менеджеры свяжутся с вами`;
+    //     },
+    //     headers: {
+    //         'Content-type': 'application/json; charset=UTF-8',
+    //     },
+    // });
+});

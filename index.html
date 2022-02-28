@@ -12,6 +12,7 @@
     <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/timer.css" />
+    <!-- <link rel="stylesheet" href="css/modal.css" /> -->
     <title>Indonesia</title>
     <script src="js/index.js" defer type="module"></script>
 </head>
@@ -324,10 +325,7 @@
                     name="dates"
                     id="reservation__date"
                     class="reservation__select"
-                  >
-
-
-                  </select>
+                  ></select>
                 </label>
                             <label class="reservation__select-wrapper reservation__select-wrapper_people">
                   <select
@@ -338,7 +336,6 @@
                     <option value="" class="tour__option reservation__option">
                       Количество человек
                     </option>
-                   
                   </select>
                 </label>
                         </div>
@@ -353,7 +350,7 @@
                   class="reservation__input reservation__input_name"
                   id="reservation__name"
                   placeholder="Введите ваше ФИО"
-                  name='fio'
+                  name="fio"
                 />
               </div>
               <div class="reservation__input-wrap">
@@ -372,9 +369,7 @@
             </div>
             <div class="reservation__bottom">
               <div class="reservation__info">
-                <p class="reservation__data">
-                  
-                </p>
+                <p class="reservation__data"></p>
                 <p class="reservation__price"></p>
               </div>
               <button class="button reservation__button">Забронировать</button>
@@ -480,7 +475,8 @@
                 type="text"
                 class="footer__input"
                 placeholder="Введите адрес электронной почты"
-                name="email";
+                name="email"
+                ;
               />
               <button
                 type="submit"
@@ -504,5 +500,17 @@
       </div>
     </footer>
     <a href="#top" class="top"><img src="img/airplane.svg" title="наверх" /></a>
+    <div class="overlay overlay_confirm">
+      <div class="modal">
+        <h2 class="modal__title">Подтверждение заявки</h2>
+        <p class="modal__text">Бронирование путешествия в Индию на 6 человек</p>
+        <p class="modal__text">В даты: 24 ноября - 7 декабря</p>
+        <p class="modal__text">Стоимость тура 459 588₽</p>
+        <div class="modal__button">
+          <button class="modal__btn modal__btn_confirm">Подтверждаю</button>
+          <button class="modal__btn modal__btn_edit">Изменить данные</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
