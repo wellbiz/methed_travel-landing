@@ -1,16 +1,15 @@
-const styles = new Set();
+const styles = new Map();
 
 const loadStyle = (url) => {
     if (styles.has(url)) {
-        return styles.get(url)
+        return styles.get(url);
     }
 
     const stylePromise = new Promise((resolve) => {
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
         link.href = url;
-
-        link.addEventListener("load", () => {
+        link.addEventListener('load', () => {
             resolve();
         });
         document.head.append(link);
