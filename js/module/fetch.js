@@ -16,18 +16,7 @@ HTML-код писать не нужно, модальное окно созда
 При клике на "Подтверждаю" зарываем модальное окно и выполняем отправку данных
 После успшной отправки все элементы в форме сделать disabled
 */
-// const overlay = document.querySelector('.overlay');
 
-// overlay.addEventListener('click', (e) => {
-//     overlay.remove();
-//     alert('overlay')
-// });
-
-// btnAgree.addEventListener('click', () => {
-//     overlay.remove();
-//     alert('agree')
-// });
-// btnEdit.addEventListener('click', () => {alert('edit')});
 const loadTours = async (cb) => {
     const res = await fetch('data.json');
     const data = await res.json();
@@ -159,13 +148,46 @@ const formBookingTour = document.querySelector('.reservation__form');
 
 formBookingTour.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const data = {
+        dates: formBookingTour.dates.value,
+        people: formBookingTour.people.value,
+        fio: formBookingTour.fio.value,
+        phone: formBookingTour.phone.value,
+    };
+    const overlay = document.querySelector('.overlay');
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target.className === 'overlay') {
+                overlay.remove();
+                alert('overlay');
+            }
+        });
+    }
+
+    document
+        .querySelector('.modal__btn_confirm')
+        .addEventListener('click', () => {
+            overlay.remove();
+            alert('Подтверждаю');
+        });
     const checkSubmit = await fetchRequest(
         'https://jsonplaceholder.typicode.com/posts',
         {
+            method: 'POST',
+            body: {
+                dates: formBookingTour.dates.value,
+                people: formBookingTour.people.value,
+                fio: formBookingTour.fio.value,
+                phone: formBookingTour.phone.value,
+            },
             callback: showModal,
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
         }
     );
     console.log(checkSubmit);
+
     // fetchRequest('https://jsonplaceholder.typicode.com/posts', {
     //     method: 'POST',
     //     body: {

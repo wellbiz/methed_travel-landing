@@ -21,9 +21,9 @@ const showModal = async (err, data) => {
         title.className = 'modal__title';
         title.textContent = 'Подтверждение заявки';
 
-        peopleDescr.textContent = `Бронирование путешествия в Индию на 6 человек`;
+        peopleDescr.textContent = `Бронирование путешествия в Индию на ${data.pe} человек`;
         dateDescr.textContent = `В даты: 24 ноября - 7 декабря`;
-        priceDescr.textContent = `Стоимость тура 459 588₽`;
+        priceDescr.textContent = `Стоимость тура ${data.price}₽`;
 
         buttonsBlock.className = 'modal__button';
 

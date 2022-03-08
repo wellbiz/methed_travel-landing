@@ -11,11 +11,11 @@ export async function fetchRequest(
         const response = await fetch(url, options);
         if (response.ok) {
             const data = await response.json();
-            if (callback) callback(null, data);
+            if (callback) return callback(null, data);
             return;
         }
         throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
     } catch (err) {
-        callback(err);
+        return callback(err);
     }
 }
