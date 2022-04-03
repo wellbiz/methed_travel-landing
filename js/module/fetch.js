@@ -170,6 +170,7 @@ formBookingTour.addEventListener('submit', async (e) => {
             overlay.remove();
             alert('Подтверждаю');
         });
+
     const checkSubmit = await fetchRequest(
         'https://jsonplaceholder.typicode.com/posts',
         {
@@ -180,7 +181,8 @@ formBookingTour.addEventListener('submit', async (e) => {
                 fio: formBookingTour.fio.value,
                 phone: formBookingTour.phone.value,
             },
-            callback: showModal,
+
+            callback: showModal(),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },

@@ -1,6 +1,8 @@
 import loadStyle from './loadStyle.js';
-const showModal = async (err, data) => {
+const showModal = async (dates, people, fio, phone) => {
     await loadStyle('css/modal.css', () => {
+        console.log(dates, people, fio, phone);
+
         const overlay = document.createElement('div');
         const modal = document.createElement('div');
         const buttonsBlock = document.createElement('div');

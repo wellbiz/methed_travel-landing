@@ -1,7 +1,7 @@
-
 import {declOfNum} from './declOfNum.js';
 
-export const createModalWindow = (date, countPeople, priceTour) => {
+export const createModalWindow = (err, data) => {
+    
     const overlay = document.createElement('div');
     overlay.className = 'overlay overlay_confirm';
 
