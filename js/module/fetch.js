@@ -1,6 +1,11 @@
 import {declOfNum} from './declOfNum.js';
 import {fetchRequest} from './fetch/fetchRequest.js';
-import showModal from './modal.js';
+import {
+    showModal,
+    createPopupStatus201,
+    createPopupStatusFalse,
+} from './modal.js';
+//showModal();
 
 /*
 Задание №1
@@ -22,6 +27,9 @@ const loadTours = async (cb) => {
     const data = await res.json();
     cb(data);
 };
+
+let bookingTour = {};
+let totalPrice = 0;
 
 const initSelectDate = (data) => {
     const firstOptionDateTour = document.createElement('option');
@@ -127,6 +135,8 @@ const showInfoTour = (data) => {
                 maximumFractionDigits: 0,
             }).format(tour['price'] * countPeople);
         }
+
+        totalPrice = price.textContent;
     });
 
     selectDate.addEventListener('focus', () => {
@@ -148,12 +158,16 @@ const formBookingTour = document.querySelector('.reservation__form');
 
 formBookingTour.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const data = {
-        dates: formBookingTour.dates.value,
-        people: formBookingTour.people.value,
-        fio: formBookingTour.fio.value,
-        phone: formBookingTour.phone.value,
-    };
+
+    const dateAndPeople = document.querySelector('.reservation__data');
+    const price = document.querySelector('.reservation__price');
+
+    bookingTour.dates = formBookingTour.dates.value;
+    bookingTour.people = formBookingTour.people.value;
+    bookingTour.fio = formBookingTour.fio.value;
+    bookingTour.phone = formBookingTour.phone.value;
+    bookingTour.totalPrice = totalPrice;
+
     const overlay = document.querySelector('.overlay');
     if (overlay) {
         overlay.addEventListener('click', (e) => {
@@ -163,52 +177,65 @@ formBookingTour.addEventListener('submit', async (e) => {
             }
         });
     }
-
-    document
-        .querySelector('.modal__btn_confirm')
-        .addEventListener('click', () => {
-            overlay.remove();
-            alert('Подтверждаю');
-        });
-
-    const checkSubmit = await fetchRequest(
-        'https://jsonplaceholder.typicode.com/posts',
-        {
-            method: 'POST',
-            body: {
-                dates: formBookingTour.dates.value,
-                people: formBookingTour.people.value,
-                fio: formBookingTour.fio.value,
-                phone: formBookingTour.phone.value,
-            },
-
-            callback: showModal(),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        }
-    );
-    console.log(checkSubmit);
-
-    // fetchRequest('https://jsonplaceholder.typicode.com/posts', {
-    //     method: 'POST',
-    //     body: {
-    //         dates: formBookingTour.dates.value,
-    //         people: formBookingTour.people.value,
-    //         fio: formBookingTour.fio.value,
-    //         phone: formBookingTour.phone.value,
-    //     },
-    //     callback(err, data) {
-    //         if (err) {
-    //             console.warn(err, data);
-    //             formBookingTour.textContent = err;
-    //         }
-    //         document.querySelector(
-    //             '.reservation__info'
-    //         ).textContent = `Заявка успешно отправлена, наши менеджеры свяжутся с вами`;
-    //     },
-    //     headers: {
-    //         'Content-type': 'application/json; charset=UTF-8',
-    //     },
-    // });
+    showModal(bookingTour);
+    formBookingTour.reset();
+    dateAndPeople.textContent = '';
+    price.textContent = '0 Р';
 });
+// document
+//     .querySelector('.modal__btn_confirm')
+//     .addEventListener('click', () => {
+//         overlay.remove();
+//         alert('Подтверждаю');
+//     });
+
+//отправка на сервер данные из формы
+export const checkSubmit = (data) => {
+    fetch('http://localhost:3000/tours', {
+        method: 'POST',
+        body: JSON.stringify({
+            dates: data.dates,
+            people: data.people,
+            fio: data.fio,
+            phone: data.phone,
+            price: data.totalPrice,
+        }),
+        headers: {
+            'Content-type': 'application/json',
+        },
+    })
+        .then((response) => {
+            if (response.status === 201) {
+                createPopupStatus201();
+                
+            }
+            if (response.status != 201) {
+                
+                createPopupStatusFalse();
+            }
+        })
+        .catch((error) => console.error(error));
+};
+
+// fetchRequest('https://jsonplaceholder.typicode.com/posts', {
+//     method: 'POST',
+//     body: {
+//         dates: formBookingTour.dates.value,
+//         people: formBookingTour.people.value,
+//         fio: formBookingTour.fio.value,
+//         phone: formBookingTour.phone.value,
+//     },
+//     callback(err, data) {
+//         if (err) {
+//             console.warn(err, data);
+//             formBookingTour.textContent = err;
+//         }
+//         document.querySelector(
+//             '.reservation__info'
+//         ).textContent = `Заявка успешно отправлена, наши менеджеры свяжутся с вами`;
+//     },
+//     headers: {
+//         'Content-type': 'application/json; charset=UTF-8',
+//     },
+// });
+// });

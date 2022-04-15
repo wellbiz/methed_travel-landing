@@ -1,63 +1,131 @@
 import loadStyle from './loadStyle.js';
-const showModal = async (dates, people, fio, phone) => {
-    await loadStyle('css/modal.css', () => {
-        console.log(dates, people, fio, phone);
+import {checkSubmit} from './fetch.js';
 
-        const overlay = document.createElement('div');
-        const modal = document.createElement('div');
-        const buttonsBlock = document.createElement('div');
-        const title = document.createElement('h2');
-        const modalText = document.createElement('p');
-        modalText.className = 'modal__text';
+export const createPopupStatus201 = () => {
+    const inputEmail = document.querySelector('.footerinput');
+    const overlay = document.createElement('div');
+    overlay.classList.add('overlay_popup', 'is-visible');
 
-        const peopleDescr = modalText.cloneNode();
-        const dateDescr = modalText.cloneNode();
-        const priceDescr = modalText.cloneNode();
+    const div = document.createElement('div');
+    div.classList.add('popup201');
 
-        const btnAgree = document.createElement('button');
-        const btnEdit = document.createElement('button');
+    div.insertAdjacentHTML(
+        'beforeend',
+        `<button class="close" type="button"></button>
+      <h2 class="title">Ваша заявка успешно отправлена</h2>
+      <p class="description">Наши менеджеры свяжутся с вами в течении 3-х рабочих дней</p>
+            <div class="status__201">
+                <div class="vector__img"><img src="../../img/Vector.png" alt=""></div>
+            </div>`
+    );
 
-        overlay.className = 'overlay overlay_confirm';
-        modal.className = 'modal';
+    overlay.append(div);
 
-        title.className = 'modal__title';
-        title.textContent = 'Подтверждение заявки';
+    document.body.append(overlay);
 
-        peopleDescr.textContent = `Бронирование путешествия в Индию на ${data.pe} человек`;
-        dateDescr.textContent = `В даты: 24 ноября - 7 декабря`;
-        priceDescr.textContent = `Стоимость тура ${data.price}₽`;
-
-        buttonsBlock.className = 'modal__button';
-
-        btnAgree.className = 'modal__btn modal__btn_confirm';
-        btnAgree.textContent = 'Подтверждаю';
-
-        btnEdit.className = 'modal__btn modal__btn_edit';
-        btnEdit.textContent = 'Изменить данные';
-
-        buttonsBlock.append(btnAgree, btnEdit);
-        modal.append(title, peopleDescr, dateDescr, priceDescr, buttonsBlock);
-        overlay.append(modal);
-        document.body.append(overlay);
-        return new Promise((resolve) => {
-            overlay.addEventListener('click', (e) => {
-                overlay.remove();
-                alert('overlay');
-                resolve(true);
-            });
-        });
-
-        // overlay.addEventListener('click', (e) => {
-        //     overlay.remove();
-        //     alert('agree')
-        // });
-
-        // btnAgree.addEventListener('click', () => {
-        //     overlay.remove();
-        //     alert('agree')
-        // });
-        // btnEdit.addEventListener('click', () => {alert('edit')});
-    });
+    return {
+        overlay,
+        div,
+    };
 };
 
-export default showModal;
+export const createPopupStatusFalse = () => {
+    const overlay = document.createElement('div');
+    overlay.classList.add('overlay_popup', 'is-visible');
+
+    const div = document.createElement('div');
+    div.classList.add('popupfalse');
+
+    div.insertAdjacentHTML(
+        'beforeend',
+        `
+      <button class="close" type="button"></button>
+      <h2 class="title">Упс... Что-то пошло не так</h2>
+      <p class="description">Не удалось отправить заявку. Пожалуйста, повторите отправку еще раз</p>
+            <a href="#reservation" class="btnfalse">Забронировать</a>
+    `
+    );
+
+    overlay.append(div);
+
+    document.body.append(overlay);
+
+    const btnFalse = document.querySelector('.btnfalse');
+    btnFalse.addEventListener('click', () => {
+        overlay.classList.remove('is-visible');
+    });
+
+    return {
+        overlay,
+        div,
+    };
+};
+
+export const createModal = (data) => {
+    const overlay = document.createElement('div');
+    const modal = document.createElement('div');
+    const buttonsBlock = document.createElement('div');
+    const title = document.createElement('h2');
+    const modalText = document.createElement('p');
+    modalText.className = 'modal__text';
+
+    const peopleDescr = modalText.cloneNode();
+    const dateDescr = modalText.cloneNode();
+    const priceDescr = modalText.cloneNode();
+
+    const btnAgree = document.createElement('button');
+    const btnEdit = document.createElement('button');
+
+    overlay.className = 'overlay overlay_confirm';
+    modal.className = 'modal';
+
+    title.className = 'modal__title';
+    title.textContent = 'Подтверждение заявки';
+
+    peopleDescr.textContent = `Бронирование путешествия в Индию на ${data.people} человек`;
+    dateDescr.textContent = `В даты: ${data.dates}`;
+    priceDescr.textContent = `Стоимость тура ${data.totalPrice}`;
+
+    buttonsBlock.className = 'modal__button';
+
+    btnAgree.className = 'modal__btn modal__btn_confirm';
+    btnAgree.textContent = 'Подтверждаю';
+
+    btnEdit.className = 'modal__btn modal__btn_edit';
+    btnEdit.textContent = 'Изменить данные';
+
+    buttonsBlock.append(btnAgree, btnEdit);
+    modal.append(title, peopleDescr, dateDescr, priceDescr, buttonsBlock);
+    overlay.append(modal);
+    document.body.append(overlay);
+
+    return {overlay, modal};
+};
+
+export const showModal = async (data) => {
+  await loadStyle('css/modal.css');
+
+
+    const {overlay, modal} = createModal(data);
+    modal.addEventListener('click', ({target}) => {
+        if (target.classList.contains('modal__btn_confirm')) {
+            checkSubmit(data);
+            overlay.classList.remove('overlay');
+        }
+        if (target.classList.contains('modal__btn_edit'))
+            overlay.classList.remove('overlay');
+    });
+
+    // overlay.addEventListener('click', (e) => {
+    //     overlay.remove();
+    //     alert('agree')
+    // });
+
+    // btnAgree.addEventListener('click', () => {
+    //     overlay.remove();
+    //     alert('agree')
+    // });
+    // btnEdit.addEventListener('click', () => {alert('edit')});
+    //}
+    //);
+};

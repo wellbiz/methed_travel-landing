@@ -1,33 +1,37 @@
-import { fetchRequest } from "./fetchRequest.js";
+import {fetchRequest} from './fetchRequest.js';
+import {loadDb} from './loadDb.js';
+import { createPopupStatusFalse,createPopupStatus201 } from '../modal.js';
 
-const formEmail = document.querySelector(".footer__form");
+const formEmail = document.querySelector('.footer__form');
 
-formEmail.addEventListener("submit", (e) => {
-    e.preventDefault();
+export const formEmailControl = () => {
+    const form = document.querySelector('.footer__form');
 
-    fetchRequest("https://jsonplaceholder.typicode.com/posts", {
-        method: "POST",
-        body: {
-            email: formEmail.email.value,
-        },
-        callback(err, data) {
-            if (err) {
-                console.warn(err, data);
-                formEmail.textContent = err;
-            }
-            formEmail.textContent = ``;
-            const title = document.createElement("h2");
-            title.className = "footer-title";
-            title.textContent = `Ваша заявка успешно отправлена`;
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-            const result = document.createElement("p");
-            result.className = "footer__text";
-            result.textContent =
-                "Наши менеджеры свяжутся с вами в течении 3 рабочих дней";
-            formEmail.append(title, result);
-        },
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        },
+        const formData = new FormData(e.target);
+        const emailData = Object.fromEntries(formData);
+
+        dbEmailControl(emailData);
+
+        return {emailData};
     });
-});
+};
+export const dbEmailControl = (email) => {
+    fetch('http://localhost:3000/emails', {
+        method: 'POST',
+        body: JSON.stringify({
+            email: email.email,
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((response) => {
+            if (response.status === 201) createPopupStatus201();
+            if (response.status != 201) createPopupStatusFalse();
+        })
+        .catch((error) => console.error(error));
+};
+loadDb(formEmailControl);

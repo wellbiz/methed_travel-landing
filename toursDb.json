@@ -1,0 +1,30 @@
+{
+  "tours": [
+    {
+      "dates": "07.02 - 21.02",
+      "people": "3",
+      "fio": "Gtnhj ffd fd",
+      "phone": "88005553535",
+      "price": "188 100 ₽",
+      "id": 1
+    }
+  ],
+  "emails": [
+    {
+      "email": "opennet@ololo.ru",
+      "id": 1
+    },
+    {
+      "email": "opennet@ololo.ru",
+      "id": 2
+    },
+    {
+      "email": "opennet123@ololo.ru",
+      "id": 3
+    },
+    {
+      "email": "opennet124@ololo.ru",
+      "id": 4
+    }
+  ]
+}

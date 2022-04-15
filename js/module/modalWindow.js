@@ -1,7 +1,6 @@
 import {declOfNum} from './declOfNum.js';
 
-export const createModalWindow = (err, data) => {
-    
+export const createModalWindow = () => {
     const overlay = document.createElement('div');
     overlay.className = 'overlay overlay_confirm';
 

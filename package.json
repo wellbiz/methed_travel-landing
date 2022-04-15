@@ -1,0 +1,23 @@
+{
+  "name": "m3l1_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wellbiz/methed_travel-landing.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wellbiz/methed_travel-landing/issues"
+  },
+  "homepage": "https://github.com/wellbiz/methed_travel-landing#readme",
+"dependencies": {
+  "axios": "^0.26.0",
+  "json-server": "^0.17.0"
+}
+}
