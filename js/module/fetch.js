@@ -159,28 +159,37 @@ const formBookingTour = document.querySelector('.reservation__form');
 formBookingTour.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const dateAndPeople = document.querySelector('.reservation__data');
-    const price = document.querySelector('.reservation__price');
+    const FIOOnlyCirilic =
+        /[а-яА-ЯЁё]{2,}\s+[а-яА-ЯЁё]{2,}\s+[а-яА-ЯЁё]{2,}/gm;
+    const telNumRegesp = /\+[0-9]+/gm;
+    if (FIOOnlyCirilic.test(formBookingTour.fio.value) === false) {
+        alert('Введите ФИО на кириллице 3 слова');
+    } else if (telNumRegesp.test(formBookingTour.phone.value) === false) {
+        alert('Вводите номер только цифры и символ + вначале');
+    } else {
+        const dateAndPeople = document.querySelector('.reservation__data');
+        const price = document.querySelector('.reservation__price');
 
-    bookingTour.dates = formBookingTour.dates.value;
-    bookingTour.people = formBookingTour.people.value;
-    bookingTour.fio = formBookingTour.fio.value;
-    bookingTour.phone = formBookingTour.phone.value;
-    bookingTour.totalPrice = totalPrice;
+        bookingTour.dates = formBookingTour.dates.value;
+        bookingTour.people = formBookingTour.people.value;
+        bookingTour.fio = formBookingTour.fio.value;
+        bookingTour.phone = formBookingTour.phone.value;
+        bookingTour.totalPrice = totalPrice;
 
-    const overlay = document.querySelector('.overlay');
-    if (overlay) {
-        overlay.addEventListener('click', (e) => {
-            if (e.target.className === 'overlay') {
-                overlay.remove();
-                alert('overlay');
-            }
-        });
+        const overlay = document.querySelector('.overlay');
+        if (overlay) {
+            overlay.addEventListener('click', (e) => {
+                if (e.target.className === 'overlay') {
+                    overlay.remove();
+                    alert('overlay');
+                }
+            });
+        }
+        showModal(bookingTour);
+        formBookingTour.reset();
+        dateAndPeople.textContent = '';
+        price.textContent = '0 Р';
     }
-    showModal(bookingTour);
-    formBookingTour.reset();
-    dateAndPeople.textContent = '';
-    price.textContent = '0 Р';
 });
 // document
 //     .querySelector('.modal__btn_confirm')
@@ -207,10 +216,8 @@ export const checkSubmit = (data) => {
         .then((response) => {
             if (response.status === 201) {
                 createPopupStatus201();
-                
             }
             if (response.status != 201) {
-                
                 createPopupStatusFalse();
             }
         })
