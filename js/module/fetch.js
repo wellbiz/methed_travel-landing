@@ -5,22 +5,7 @@ import {
     createPopupStatus201,
     createPopupStatusFalse,
 } from './modal.js';
-//showModal();
 
-/*
-Задание №1
-Дизайнер подготовил стили и вёрстку
-Ваша задача интегрировать стили (ассинхронно) перед открытием модального окна
-HTML-код писать не нужно, модальное окно создаем скриптами
-Модальное окно открывается при клике на кнопку "Забронировать" в форме "Бронирования тура"
-Данные в модальном окне должны формироваться на основе данных из формы
-
-Задание №2
-В модальном окне:
-При клике на "Изменить данные" зарываем модальное окно
-При клике на "Подтверждаю" зарываем модальное окно и выполняем отправку данных
-После успшной отправки все элементы в форме сделать disabled
-*/
 
 const loadTours = async (cb) => {
     const res = await fetch('data.json');
@@ -191,14 +176,7 @@ formBookingTour.addEventListener('submit', async (e) => {
         price.textContent = '0 Р';
     }
 });
-// document
-//     .querySelector('.modal__btn_confirm')
-//     .addEventListener('click', () => {
-//         overlay.remove();
-//         alert('Подтверждаю');
-//     });
 
-//отправка на сервер данные из формы
 export const checkSubmit = (data) => {
     fetch('http://localhost:3000/tours', {
         method: 'POST',
@@ -223,26 +201,3 @@ export const checkSubmit = (data) => {
         })
         .catch((error) => console.error(error));
 };
-
-// fetchRequest('https://jsonplaceholder.typicode.com/posts', {
-//     method: 'POST',
-//     body: {
-//         dates: formBookingTour.dates.value,
-//         people: formBookingTour.people.value,
-//         fio: formBookingTour.fio.value,
-//         phone: formBookingTour.phone.value,
-//     },
-//     callback(err, data) {
-//         if (err) {
-//             console.warn(err, data);
-//             formBookingTour.textContent = err;
-//         }
-//         document.querySelector(
-//             '.reservation__info'
-//         ).textContent = `Заявка успешно отправлена, наши менеджеры свяжутся с вами`;
-//     },
-//     headers: {
-//         'Content-type': 'application/json; charset=UTF-8',
-//     },
-// });
-// });
