@@ -148,9 +148,9 @@ formBookingTour.addEventListener('submit', async (e) => {
         /[а-яА-ЯЁё]{2,}\s+[а-яА-ЯЁё]{2,}\s+[а-яА-ЯЁё]{2,}/gm;
     const telNumRegesp = /\+[0-9]+/gm;
     if (FIOOnlyCirilic.test(formBookingTour.fio.value) === false) {
-        alert('Введите ФИО на кириллице 3 слова');
+        //alert('Введите ФИО на кириллице 3 слова');
     } else if (telNumRegesp.test(formBookingTour.phone.value) === false) {
-        alert('Вводите номер только цифры и символ + вначале');
+       // alert('Вводите номер только цифры и символ + вначале');
     } else {
         const dateAndPeople = document.querySelector('.reservation__data');
         const price = document.querySelector('.reservation__price');

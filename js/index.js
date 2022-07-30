@@ -1,10 +1,10 @@
-import { timer } from './module/timer.js';
+import {timer} from './module/timer.js';
 import './module/acc.js';
 import './module/burger.js';
 import './module/animation.js';
 import './module/fetch/email.js';
 import './module/fetch.js';
-
+import './module/validate.js';
 
 const showTimer = () => {
     const blockTimer = document.querySelector('.timer');
